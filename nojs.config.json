@@ -1,4 +1,13 @@
 {
-  host: true,
-  port: 80
+  "host": true,
+  "_comment_host": "Allow other devices to connect to the server",
+  
+  "port": 80,
+  "_comment_port": "Set the server's port to 80",
+
+  "nocompress": ["/Cantarell-VF.woff2"],
+  "_comment_nocompress": "Enabling compression seems to break woff files",
+  
+  "verbose": true,
+  "_comment_verbose": "Just for a more detailed output"
 }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Beat Clock</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @font-face {
+        font-family: "Cantarell";
+        font-style: normal;
+        font-weight: 100 200 300 400 500 600 700 800 900;
+        src: local("Cantarell"), url("/Cantarell-VF.woff2") format("woff2");
+        font-display: swap;
+      }
+      
+      * {
+       	font-family: "Cantarell", sans-serif;
+        background-color: var(--bg);
+        color: var(--fg);
+      }
+      
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      ::selection {
+        background-color: var(--fg);
+        color: var(--bg);
+      }
+      
+      :root {
+        --bg: #f6f5f4;
+        --fg: #000;
+      }
+      
+      @media only screen and (prefers-color-scheme: dark) {
+        :root {
+          --bg: #241f31;
+          --fg: #fff;
+        }
+      }
+      
+      #beat {
+        font-size: 10em;
+        font-weight: 300;
+        font-feature-settings: "tnum" 1;
+      }
+      
+      #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: auto;
+      }
+      
+      #noscript {
+        border: 1px solid #ff0000;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+      
+      .noscript {
+        background-color: rgb(255,100,125);
+        color: var(--fg);
+      }
+    </style>
+    <script>
+      // copied from https://codeberg.org/foreverxml/beatclock/src/branch/main/src/window.js
+      // this function converts time (optionally specified) into beats
+      function beatify(millis = new Date()) {
+        millis = (millis.getTime() + 3600000) % 86400000;
+        let currentBeat = Math.floor(millis / 86400);
+        let len = currentBeat.toString().length;
+        return len === 1 ? "00" + currentBeat
+          : len === 2 ? "0" + currentBeat
+          : currentBeat.toString();
+      }
+
+      // remove beat convert to normal time
+      function debeatify(from_beat = beatify()) {
+        return new Date(parseInt(from_beat) * 86400);
+      }
+
+      var subbeat;
+      var mainbeat;
+      function func_beat() {
+       	mainbeat.innerText = "@" + beatify();
+        setTimeout(func_beat, 10000);
+      }
+
+      // calculate current beat, or show beat from URL
+      function loadbeat() {
+        let url = window.location.search;
+        if (url === "") {
+          document.querySelector("#subbeat").innerText = "Synced with current time";
+          setTimeout(func_beat, 10);
+          return;
+        }
+        url = url.splice(-3);
+        let time = debeatify(url);
+        subbeat.innerText = "";
+        mainbeat.innerText = "";
+        subbeat.innerText += "is equal to " + time.getHours() + ":" + time.getMinutes() + " local time";
+        mainbeat.innerText += "@" + beatify(time);
+      };
+
+      setTimeout(function() {
+        subbeat = document.querySelector("#subbeat");
+        mainbeat = document.querySelector("#beat");
+        loadbeat();
+      }, 250);
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <div id="noscript" class="noscript">
+        <strong><p class="noscript">Uh, oh!</p></strong>
+        <p class="noscript">You need JavaScript to be able to properly access this website. This can be enabled in your browser settings. If not, you can downlaod a <a href="https://www.waterfox.net/" class="noscript">competent browser</a>.</p>
+      </div>
+    </noscript>
+    <div id="box">
+      <p id="beat">@???</p>
+      <p id="subbeat">Time not detected</p>
+    </div>
+    <!-- i think the noscript should be a div with an id, so that it can be centered --> <!-- okie-->
+  </body>
+</html>

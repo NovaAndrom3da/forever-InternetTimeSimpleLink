@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "Cantarell";
+  font-style: normal;
+  font-weight: 100 200 300 400 500 600 700 800 900;
+  src: local("Cantarell"), url("/Cantarell-VF.woff2") format("woff2");
+  font-display: swap;
+}
+
+* {
+ 	font-family: "Cantarell", sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+
+:root {
+  --bg: #f6f5f4;
+  --fg: #000;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root {
+    --bg: #241f31;
+    --fg: #fff;
+  }
+}
+
+#beat {
+  font-size: 10em;
+  font-weight: 300;
+  font-feature-settings: "tnum" 1;
+}
+
+#box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+}
+
+#noscript {
+  border: 1px solid #ff0000;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.noscript {
+  background-color: rgb(255,100,125);
+  color: var(--fg);
+}
