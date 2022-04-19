@@ -1,0 +1,2 @@
+import nojs
+nojs.run()
